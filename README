@@ -1,0 +1,5 @@
+README
+======
+
+1). You have to make the socnet directory as apache's root folder
+2). Import the db.sql file into your mysql database
