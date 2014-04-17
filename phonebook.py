@@ -71,20 +71,31 @@ def store(ip,id,flag):
 def retrieve(ip,id,flag):
     
     login_url = "http://"+ip+":8880/"
-    ping_request = req(login_url)
-    cookie = ping_request.headers['set-cookie'].split(';')[0]
-    data = {
-        "username":id,
-        "password":hashlib.md5(flag).hexdigest(),
-    }
-    login_request = req(login_url, data=data, cookie=cookie)
-    flag_data = re.compile(flag)
-    if flag_data.search(login_request.data) is not None:
-	    print "Ya got back the flag !!!"
-	    return 0
-    else:
-        print "Wrong flag !!"
-        return 9
+    try:
+        ping_request = req(login_url)
+        cookie = ping_request.headers['set-cookie'].split(';')[0]
+        data = {
+            "username":id,
+            "password":hashlib.md5(flag).hexdigest(),
+        }
+        try:
+            login_request = req(login_url, data=data, cookie=cookie)
+            flag_data = re.compile(flag)
+            if flag_data.search(login_request.data) is not None:
+	            print "Ya got back the flag !!!"
+	            return 0
+            else:
+                print "Wrong flag !!"
+                return 9
+        
+        except Exception, e:
+            print "Network Down !!!"
+            return 13
+
+    except Exception, e:
+        print "Network Down !!!"
+        return 13
+
 ##
  # Main
 ##
